@@ -25,7 +25,7 @@ b = b_in;
 %описываю возможные события
 
 
-function [s, b, l] = event(s_in, b_in)%k - длина МТ
+function [s, b, l] = event(s_in, b_in)%l - длина МТ
 %#codegen
 
 minus = []; %события для отрыва димера
