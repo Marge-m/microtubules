@@ -215,7 +215,7 @@ sob3 = final_list_3(final_list_3 ~= inf);
 sob = final_list_1(least_time_1);
 
 if (sob == 1)  % first event - shorten
-    s_in(idx_final) = 0;
+    s_in(idx_final:(ceil(idx_final/size(s_in, 1)) * size(s_in, 1))) = 0;
 elseif (sob == 2)%etc.
     s_in(idx_final) = 2;
 elseif (sob == 3)
