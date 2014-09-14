@@ -36,11 +36,11 @@ minus_3 = zeros(1, N*13);%3 -execution time
 for idx = 1:numel(s_in),
     k = 0; %dummy variable
     if and((s_in(idx) > 0), (b_in(idx) == 0))%if dimer exists and there is no right lat. bond
-        if (idx - size(b_in, 1) > 0)%PF 1-12
+        if (idx - size(b_in, 1) > 0)%PF 2-13
             if (b_in(idx - size(b_in, 1)) == 0) %if there is no left lat. bond
                 k = 1;
             end
-        else% PF 13
+        else% PF 1
             if (rem(idx-1, size(b_in, 1))+1 > 2)%row > 2 (this is evaluation of row. Index is given, we transform it to view (row, column)
                 if (and(b_in(rem(idx-1, size(b_in, 1))+1-2, 13) < 2, b_in(rem(idx-1, size(b_in, 1))+1-1, 13) == 0)); %if thre is no monomer bonds to the left
                     k = 1;
