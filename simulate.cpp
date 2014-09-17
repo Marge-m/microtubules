@@ -76,7 +76,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
       }
       if (b(r, c) > 0 && b(r + 1, c) == 0) // break lateral event
       {
-	double pi = 1;
+	double p = 1;
 	double k_break;
         if (c == 12)
         {
@@ -84,7 +84,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
           {
             if (b(r + 1, 0) == 1 && b(r, 11) == 1) // check if neighbor lateral bonds exist
             {
-              pi = 1000;
+              p = 1000;
             }
             if (s(r, c) == 1 && s(r + 1, 0) == 1) // both GDP
             {
@@ -103,7 +103,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
           {
             if (b(r + 2, 0) == 1 && b(r, 11) == 1)
             {
-              pi = 1000;
+              p = 1000;
             }
             if (s(r, c) == 1 && s(r + 2, 0) == 1) // both GDP
             {
@@ -125,7 +125,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
           {
             if (b(r - 2, 12) == 2 && b(r, 1) == 1 && b(r - 1, 12) >= 1) //if neighbor lat bonds exist
             {
-              pi = 1000;
+              p = 1000;
             }
             if (s(r, c) == 1 && s(r, 1) == 1) //both GDP
             {
@@ -145,7 +145,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
         {
           if (b(r, 12) == 2 && b(r, 10) == 1)
           {
-            pi = 1000;
+            p = 1000;
           }
           if (s(r, c) == 1 && s(r, 12) == 1) //both GDP
           {
@@ -164,7 +164,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
         {
           if (b(r, c - 1) == 1 && b(r, c + 1) == 1)
           {
-            pi = 1000;
+            p = 1000;
           }
           if (s(r, c) == 1 && s(r, c + 1) == 1) //both GDP
           {
@@ -176,12 +176,13 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
           }
           else if (s(r, c) == 2 && s(r, c + 1) == 2)
           {
-              k_break = k_break6;
+            k_break = k_break6;
           }
         }
+//        cout << r << c << k_break/p << '\n';
         if (r > 2)
         {
-          final_cube(r, c, 2) = -log(((double) rand() / (RAND_MAX)))/(k_break/pi);
+           final_cube(r, c, 2) = -log(((double) rand() / (RAND_MAX)))/(k_break/p);
         }
       }
       if (r > 1)
@@ -190,10 +191,10 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
 	{
 	  if (b(r, c) == 0 && s(r, c + 1) > 0) //no lat. bond; right neighbor exists; there's lat. bond below
 	  {
-	    final_cube(r, c, 3) = -log(((double) rand() / (RAND_MAX)))/(k_bond);
+	     final_cube(r, c, 3) = -log(((double) rand()/ (RAND_MAX)))/(k_bond);
 	  }
 	}
-	else if (c == 12 && b(r - 1, c) > 0)//13th PF
+	else if (c == 12 && b(r - 1, c) == 2)//13th PF
 	{
 	  if (r > 2 && ((b(r, c) == 0 && s(r - 1, 0) > 0) || (b(r, c) == 1 && s(r - 2, 0) > 0)))
 	  {
@@ -205,7 +206,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
 	{
 	  if(s(r, c) == 2 && s(r + 1, c) != 0)
 	  {
-	    final_cube(r, c, 3) = -log(((double) rand() / (RAND_MAX)))/(k_hydr);
+	    final_cube(r, c, 4) = -log(((double) rand() / (RAND_MAX)))/(k_hydr);
 	  }
 	}
       }
@@ -253,6 +254,9 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
   }
   l(x) = (double)(non_zer / 13.0f - 10.0f);
   cout << tm << "," << l(x) << "\n";
+//  cout << s << '\n';
+//  cout << b << '\n';
+//  cout << final_cube << '\n';
 }
 
 
@@ -282,7 +286,3 @@ int main(int argc, char** argv)
 //  s_in.print();
   return 0;
 }
-
-
-
-
