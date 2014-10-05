@@ -26,6 +26,8 @@ const int hydrolysis = 4;
 
 void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
 {
+  //cout << s << '\n';
+  //cout << b << '\n';
   cube final_cube = cube(N, 13, 5);
   final_cube.fill(datum::inf);
   for (int c = 0; c < 13; c++)
@@ -61,17 +63,17 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
       {
         if (s(r - 1, c) == 2)
 	{
-          final_cube(r, c, 0) = -log(((double) rand() / (RAND_MAX)))/k_minus_GTP;
+          final_cube(r, c, 0) = -log(double(rand()) / double((RAND_MAX)))/k_minus_GTP;
 	 }
 	 else
 	 {
-           final_cube(r, c, 0) = -log(((double) rand() / (RAND_MAX)))/k_minus_GDP;
+           final_cube(r, c, 0) = -log(double(rand()) / double((RAND_MAX)))/k_minus_GDP;
          }
         }
       if (r < N - 1) //on event
       {
         if (s(r, c) > 0 && s(r + 1, c) == 0) {
-	  final_cube(r + 1, c, 1) = -log(((double) rand() / (RAND_MAX)))/k_plus;
+	  final_cube(r + 1, c, 1) = -log(double(rand()) / double((RAND_MAX)))/k_plus;
         }
       }
       if (b(r, c) > 0 && b(r + 1, c) == 0) // break lateral event
@@ -182,7 +184,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
 //        cout << r << c << k_break/p << '\n';
         if (r > 2)
         {
-           final_cube(r, c, 2) = -log(((double) rand() / (RAND_MAX)))/(k_break/p);
+           final_cube(r, c, 2) = -log(double(rand()) / double((RAND_MAX)))/(k_break/p);
         }
       }
       if (r > 1)
@@ -191,22 +193,22 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
 	{
 	  if (b(r, c) == 0 && s(r, c + 1) > 0) //no lat. bond; right neighbor exists; there's lat. bond below
 	  {
-	     final_cube(r, c, 3) = -log(((double) rand()/ (RAND_MAX)))/(k_bond);
+	     final_cube(r, c, 3) = -log(double(rand()) / double((RAND_MAX)))/(k_bond);
 	  }
 	}
 	else if (c == 12 && b(r - 1, c) == 2)//13th PF
 	{
-	  if (r > 2 && ((b(r, c) == 0 && s(r - 1, 0) > 0) || (b(r, c) == 1 && s(r - 2, 0) > 0)))
+	  if (r > 2 && ((b(r, c) == 0 && s(r + 1, 0) > 0) || (b(r, c) == 1 && s(r + 2, 0) > 0)))
 	  {
-	    final_cube(r, c, 3) = -log(((double) rand() / (RAND_MAX)))/(k_bond);
+	    final_cube(r, c, 3) = -log(double(rand()) / double((RAND_MAX)))/(k_bond);
 	  }
 	}
       }
-	if (r > 10) //Hydrolysis event
+	if (r > 9) //Hydrolysis event
 	{
 	  if(s(r, c) == 2 && s(r + 1, c) != 0)
 	  {
-	    final_cube(r, c, 4) = -log(((double) rand() / (RAND_MAX)))/(k_hydr);
+	    final_cube(r, c, 4) = -log(double(rand()) / double((RAND_MAX)))/(k_hydr);
 	  }
 	}
       }
@@ -215,7 +217,7 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
   cube_minimum = final_cube.min();
   uword min_row, min_col, min_slice;
   final_cube.min(min_row, min_col, min_slice);
-//  cout << min_slice << ' ' << min_row << ' ' << min_col << '\n' ;
+    //cout << min_slice << ' ' << min_row << ' ' << min_col << '\n' ;
   if (min_slice == 0)
   {
     for (int i = min_row; i < N; i++)
@@ -254,8 +256,6 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
   }
   l(x) = (double)(non_zer / 13.0f - 10.0f);
   cout << tm << "," << l(x) << "\n";
-//  cout << s << '\n';
-//  cout << b << '\n';
 //  cout << final_cube << '\n';
 }
 
@@ -286,3 +286,4 @@ int main(int argc, char** argv)
 //  s_in.print();
   return 0;
 }
+
