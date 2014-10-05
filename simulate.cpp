@@ -15,7 +15,8 @@ const double k_break3 = 140;
 const double k_break4 = 400;
 const double k_break5 = 90;
 const double k_break6 = 70;
-const double k_bond = 100;
+const double k_bond1 = 100;
+const double k_bond2 = 200;
 const double k_hydr = 0.70;
 const int minus_event = 0;
 const int plus_event = 1;
@@ -193,14 +194,14 @@ void event(int N, umat& s, umat& b, int x, vec& l, vec& t, double& tm)
 	{
 	  if (b(r, c) == 0 && s(r, c + 1) > 0) //no lat. bond; right neighbor exists; there's lat. bond below
 	  {
-	     final_cube(r, c, 3) = -log(double(rand()) / double((RAND_MAX)))/(k_bond);
+	     final_cube(r, c, 3) = -log(double(rand()) / double((RAND_MAX)))/(k_bond1);
 	  }
 	}
 	else if (c == 12 && b(r - 1, c) == 2)//13th PF
 	{
 	  if (r > 2 && ((b(r, c) == 0 && s(r + 1, 0) > 0) || (b(r, c) == 1 && s(r + 2, 0) > 0)))
 	  {
-	    final_cube(r, c, 3) = -log(double(rand()) / double((RAND_MAX)))/(k_bond);
+	    final_cube(r, c, 3) = -log(double(rand()) / double((RAND_MAX)))/(k_bond2);
 	  }
 	}
       }
