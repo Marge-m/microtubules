@@ -27,7 +27,8 @@ k_break3 = 140;
 k_break4 = 400;
 k_break5 = 90;
 k_break6 = 70;
-k_bond = 100;
+k_bond1 = 100;
+k_bond2 = 200;
 k_hydr = 0.70;
 
 minus_1 = zeros(1, N*13); %array for event name(code). '1' is for shorten
@@ -89,20 +90,26 @@ for idx = 1:numel(b_in),
                     else
                         pi = 1;
                     end
+                    if (and(s_in(idx) == 1, s_in(row+1,1) == 1))%if both dimers making a bond are GDP
+                        k_break = k_break1;%800
+                    elseif (or(and(s_in(idx) == 1, s_in(row+1,1) == 2), and(s_in(idx) == 2, s_in(row+1,1) == 1)))%one is GDP, the other is GTP
+                        k_break = k_break2;%180
+                    elseif (and(s_in(idx) == 2, s_in(row+1,1) == 2))%both GTP
+                        k_break = k_break3; %140 
+                    end
                 else%if both monomer bonds
                     if (and(b_in(row+2, 1) == 1, b_in(row, 12) == 1))%neighbore bonds exists
                         pi = 1000;
                     else
                         pi = 1;
                     end
-                end
-                if (and(s_in(idx) == 1, s_in(row+1,1) == 1))%if both dimers which are making a bond are GDP
-                    k_break = k_break1;%800
-                elseif (or(and(s_in(idx) == 1, s_in(row+1,1) == 2), and(s_in(idx) == 2, s_in(row+1,1) == 1)))%one is GDP, the other is GTP
-                    k_break = k_break2;%180
-                else%both GTP
-                    k_break = k_break3; %140   
-                end    
+                    if (and(s_in(idx) == 1, s_in(row+2,1) == 1))%if both dimers making a bond are GDP
+                        k_break = k_break1;%800
+                    elseif (or(and(s_in(idx) == 1, s_in(row+2,1) == 2), and(s_in(idx) == 2, s_in(row+2,1) == 1)))%one is GDP, the other is GTP
+                        k_break = k_break2;%180
+                    elseif (and(s_in(idx) == 2, s_in(row+2,1) == 2))%both GTP
+                        k_break = k_break3; %140 
+                    end
             elseif (col == 1)
                 if row > 2%PF 1
                     if (and(and(b_in(row-2, 13) == 2, b_in(row, 2) == 1), b_in(row-1, 13) >= 1))%neighbore lat. bonds are present
@@ -167,7 +174,7 @@ for idx = 1:numel(b_in),
             if (and(s_in(idx+size(b_in, 1)) > 0, sum(b_in(1:row-1, col) == 0) == 0)) %right neighbore is present and between these two PF all below lat. bonds are present
                 bond_lateral_1(find(bond_lateral_1 == 0, 1, 'first')) = 4;
                 bond_lateral_2(find(bond_lateral_2 == 0, 1, 'first')) = idx;
-                bond_lateral_3(find(bond_lateral_3 == 0, 1, 'first')) =  (-log(rand))/k_bond;%exec. time 100
+                bond_lateral_3(find(bond_lateral_3 == 0, 1, 'first')) =  (-log(rand))/k_bond1;%exec. time 100
             end
         end
     else%13 PF
@@ -177,7 +184,7 @@ for idx = 1:numel(b_in),
                     if or(and(and((b_in(idx) == 0), s_in(idx) > 0), s_in(row-1, 1) > 0), (and(and((b_in(idx) == 1), s_in(idx) > 0), s_in(row-2, 1) > 0)))%first case - no monomer bonds, second - one monomer bond
                         bond_lateral_1(find(bond_lateral_1 == 0, 1, 'first')) = 4;
                         bond_lateral_2(find(bond_lateral_2 == 0, 1, 'first')) = idx;
-                        bond_lateral_3(find(bond_lateral_3 == 0, 1, 'first')) =  (-log(rand))/k_bond;%exec time
+                        bond_lateral_3(find(bond_lateral_3 == 0, 1, 'first')) =  (-log(rand))/k_bond2;%exec time
                     end
                 end
             end
